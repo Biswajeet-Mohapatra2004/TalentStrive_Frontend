@@ -41,7 +41,7 @@ function Dashboard() {
                 return (
                     <div className="flex flex-row flex-wrap w-full h-fit items-center justify-around gap-x-2">
                         {jobs.map((job, index) => (
-                            <JobCard key={index} data={job} idn={index} />
+                            <JobCard key={index} data={job} idn={index} type={"EMPLOYERS"} />
                         ))}
                     </div>
                 );

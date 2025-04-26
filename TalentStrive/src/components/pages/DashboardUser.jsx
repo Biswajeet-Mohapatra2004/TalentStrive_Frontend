@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
-import { pdfjs } from "react-pdf";
 import { Fetch, fetchPdf, postFile } from "../../api/Fetch";
 import { JobCard } from "../Jobcard";
-import PostJobCard from "../PostJobCard";
 import { useRef } from "react";
-import ProfileEMP from "../ProfileEMP";
-import Pdf from "../Pdf";
-
-
-
 
 function DashboardUser() {
     let [jobs, setJobs] = useState([]);
@@ -106,12 +99,13 @@ function DashboardUser() {
     };
 
     const renderSection = () => {
+        const userType = "USERS"
         switch (currentSection) {
             case "Available Jobs":
                 return (
                     <div className="flex flex-row flex-wrap w-full h-fit items-center justify-around gap-x-2">
                         {jobs.map((job, index) => (
-                            <JobCard key={index} data={job} idn={index} />
+                            <JobCard key={index} data={job} idn={index} type={userType} />
                         ))}
                     </div>
                 );
