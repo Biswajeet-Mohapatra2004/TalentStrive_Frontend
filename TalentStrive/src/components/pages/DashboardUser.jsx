@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Fetch, fetchPdf, postFile } from "../../api/Fetch";
 import { JobCard } from "../Jobcard";
 import { useRef } from "react";
+import { ApplicationCard } from "../ApplicationCard";
 
 function DashboardUser() {
     let [jobs, setJobs] = useState([]);
@@ -34,8 +35,6 @@ function DashboardUser() {
             try {
                 const Applications = await Fetch("http://localhost:8080/user/applications");
                 setApplication(Applications.data.map((value, key) => application[key] = value));
-                console.log(Applications);
-                console.log(application);
             }
             catch (error) {
                 console.log(error)
@@ -112,6 +111,9 @@ function DashboardUser() {
             case "Applications":
                 return (
                     <div className="flex flex-row flex-wrap w-full h-fit items-start">
+                        {application.map((app, index) => (
+                            <ApplicationCard key={index} data={app} idn={index} type={userType} />
+                        ))}
 
                     </div>
                 )
