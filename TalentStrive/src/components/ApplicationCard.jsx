@@ -25,17 +25,12 @@ export const ApplicationCard = (props) => {
                 <p className="text-white leading-normal font-light">
                     User ID: {application.userId}
                 </p>
-                <p className="text-white leading-normal font-light">
-                    Status: {application.status}
-                </p>
             </div>
             <div className="mx-3 border-t border-slate-200 pb-3 pt-2 px-1 flex flex-row justify-between">
                 <span className="text-sm text-white font-medium">
                     Status: <span className={application.status === "In-Consideration" ? "text-yellow-400" : "text-red-500"}>{application.status}</span>
                 </span>
-                <span className="text-sm text-white font-medium flex flex-row gap-x-2">
-                    <button className="text-white border-2 border-pink-500 px-3 rounded hover:bg-pink-500 hover:text-black">View Details</button>
-                </span>
+
             </div>
         </div>
     );

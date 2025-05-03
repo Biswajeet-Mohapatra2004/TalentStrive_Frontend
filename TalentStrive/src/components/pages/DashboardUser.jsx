@@ -3,7 +3,7 @@ import { Fetch, fetchPdf, postFile } from "../../api/Fetch";
 import { JobCard } from "../Jobcard";
 import { useRef } from "react";
 import { ApplicationCard } from "../ApplicationCard";
-
+import { UpdateUserProfile } from "../UpdateUser";
 function DashboardUser() {
     let [jobs, setJobs] = useState([]);
     let [application, setApplication] = useState([{}]);
@@ -160,6 +160,7 @@ function DashboardUser() {
             case "Add Resume":
                 return (
                     <>
+                        {resume != null ? <h2 className="text-amber-50 text-center text-2xl">You have already uploaded a resume!!.</h2> : <h2 className="text-amber-50">You dont currently have any resume uploaded!!</h2>}
                         <div onSubmit={handleSubmit} className="w-fit mx-auto h-0 shadow-xl shadow-amber-50">
                             <form ref={postFormRef} className="flex mx-0 h-auto flex-col items-center justify-around gap-y-2 my-30">
 
@@ -171,7 +172,12 @@ function DashboardUser() {
                     </>
                 )
             case "Update profile":
-                return <div>Update Profile Form</div>;
+                return (
+                    <>
+                        < UpdateUserProfile />
+                    </>
+                )
+
             default:
                 return null;
         }
