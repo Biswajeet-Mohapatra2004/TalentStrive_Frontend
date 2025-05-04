@@ -75,3 +75,20 @@ export async function postFile(url, body) {
         throw error; // Rethrow error for handling
     }
 }
+export async function deleteData(url) {
+    try {
+        let token = localStorage.getItem('token'); //Retrieve JWT Token
+
+        const response = await axios.delete(url, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Error in postData:", error);
+        throw error; // Rethrow error for handling
+    }
+}

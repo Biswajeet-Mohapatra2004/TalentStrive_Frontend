@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { ApplicationCard } from "../ApplicationCard";
 import { UpdateUserProfile } from "../UpdateUser";
 import { UpdateUserPassword } from "../UpdatePassword";
-
+import UserProfile from "../UserProfile";
 function DashboardUser() {
     let [jobs, setJobs] = useState([]);
     let [application, setApplication] = useState([{}]);
@@ -81,9 +81,6 @@ function DashboardUser() {
             console.log(name, value);
         }
     };
-    const redirectToPDF = () => {
-        window.open(resume, "_blank")
-    }
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -121,81 +118,9 @@ function DashboardUser() {
                 )
             case "Profile":
                 return (
-                    <div className="flex flex-row items-start justify-around mt-10 mb-20">
-                        {/* Profile and Resume Section */}
-                        <div className="flex flex-col gap-y-8 w-full max-w-lg">
-                            {/* Profile Section */}
-                            <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8">
-                                <h2 className="text-3xl font-bold text-center mb-6">User Profile</h2>
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-medium text-gray-400">Name:</span>
-                                        <span className="text-lg">{profile.name}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-medium text-gray-400">Username:</span>
-                                        <span className="text-lg">{profile.username}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-medium text-gray-400">Role:</span>
-                                        <span className="text-lg">{profile.role}</span>
-                                    </div>
-                                    <div className="flex justify-between items-center">
-                                        <span className="font-medium text-gray-400">Jobs Applied:</span>
-                                        <span className="text-lg">
-                                            {application.length === 0
-                                                ? "No applications yet"
-                                                : application.length}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Resume Section */}
-                            <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8">
-                                <h3 className="text-2xl font-bold text-center mb-4">Resume</h3>
-                                {resume ? (
-                                    <div className="flex flex-col items-center">
-                                        <h2 className="text-amber-50 text-center text-lg mb-4">
-                                            You have uploaded a resume.
-                                        </h2>
-                                        <button
-                                            onClick={redirectToPDF}
-                                            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        >
-                                            View Resume
-                                        </button>
-                                    </div>
-                                ) : (
-                                    <h2 className="text-amber-50 text-center text-lg">
-                                        No resume uploaded yet.
-                                    </h2>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Skills Section */}
-                        <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-                            <h3 className="text-2xl font-bold text-center mb-4">Skills</h3>
-                            {skill.length === 0 ? (
-                                <h2 className="text-center text-gray-400">Loading Skills...</h2>
-                            ) : (
-                                <ul className="flex flex-wrap gap-2">
-                                    {skill.map((value, key) => (
-                                        <li
-                                            key={key}
-                                            className={`px-3 py-1 rounded-lg ${value.includes("*")
-                                                    ? "bg-red-500 text-white"
-                                                    : "bg-gray-700 text-gray-300"
-                                                }`}
-                                        >
-                                            {value.replace("*", "").trim()}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-                    </div>
+                    <>
+                        <UserProfile profileData={profile} skillData={skill} applicationData={application} resumeData={resume} />
+                    </>
                 );
             case "Add Resume":
                 return (
@@ -243,12 +168,14 @@ function DashboardUser() {
                 );
             case "Update profile":
                 return (
-                    <>
+                    <div>
                         < UpdateUserProfile />
                         <br />
+
                         <h2 className="text-center text-2xl font-bold text-white">Update password</h2>
                         <UpdateUserPassword />
-                    </>
+
+                    </div>
                 )
 
             default:
