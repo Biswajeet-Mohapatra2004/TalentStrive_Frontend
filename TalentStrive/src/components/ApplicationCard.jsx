@@ -2,35 +2,52 @@ export const ApplicationCard = (props) => {
     const application = props.data;
 
     return (
-        <div key={application.id} className="relative flex flex-col my-6 bg-gray-800 shadow-sm border text-white border-slate-200 rounded-lg w-96">
-            <div className="mx-3 mb-0 border-b border-slate-200 pt-3 pb-2 px-1">
-                <span className="text-sm font-medium text-white">
-                    id: {application.id} | Job Post ID: {application.jobPostId}
+        <div
+            key={application.id}
+            className="relative flex flex-col my-6 bg-gray-800 shadow-lg border border-gray-700 text-white rounded-lg w-96 hover:shadow-xl transition-shadow duration-300"
+        >
+            {/* Header */}
+            <div className="px-4 py-3 border-b border-gray-700">
+                <span className="text-sm font-medium text-gray-400">
+                    ID: {application.id} | Job Post ID: {application.jobPostId}
                 </span>
             </div>
 
-            <div className="p-4">
-                <h5 className="mb-2 text-white text-xl font-semibold">
-                    Title: {application.title}
-                </h5>
-                <p className="text-white leading-normal font-light">
-                    Applicant Name: {application.applicantName}
+            {/* Content */}
+            <div className="p-5 space-y-3">
+                <h5 className="text-xl font-bold text-white">{application.title}</h5>
+                <p className="text-gray-400">
+                    <span className="font-semibold text-gray-300">Applicant Name:</span> {application.applicantName}
                 </p>
-                <p className="text-white leading-normal font-light">
-                    Company: {application.company}
+                <p className="text-gray-400">
+                    <span className="font-semibold text-gray-300">Company:</span> {application.company}
                 </p>
-                <p className="text-white leading-normal font-light">
-                    Employer ID: {application.employerId}
+                <p className="text-gray-400">
+                    <span className="font-semibold text-gray-300">Employer ID:</span> {application.employerId}
                 </p>
-                <p className="text-white leading-normal font-light">
-                    User ID: {application.userId}
+                <p className="text-gray-400">
+                    <span className="font-semibold text-gray-300">User ID:</span> {application.userId}
                 </p>
             </div>
-            <div className="mx-3 border-t border-slate-200 pb-3 pt-2 px-1 flex flex-row justify-between">
-                <span className="text-sm text-white font-medium">
-                    Status: <span className={application.status === "In-Consideration" ? "text-yellow-400" : "text-red-500"}>{application.status}</span>
-                </span>
 
+            {/* Footer */}
+            <div className="px-4 py-3 border-t border-gray-700 flex justify-between items-center">
+                <span className="text-sm font-medium">
+                    Status:{" "}
+                    <span
+                        className={`${application.status === "In-Consideration"
+                                ? "text-yellow-400"
+                                : "text-red-500"
+                            }`}
+                    >
+                        {application.status}
+                    </span>
+                </span>
+                <button
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-transform transform hover:scale-105"
+                >
+                    View Details
+                </button>
             </div>
         </div>
     );

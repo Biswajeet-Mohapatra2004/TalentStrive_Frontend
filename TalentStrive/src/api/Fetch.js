@@ -41,6 +41,23 @@ export async function postData(url, body) {
         throw error; // Rethrow error for handling
     }
 }
+export async function updateData(url, body) {
+    try {
+        let token = localStorage.getItem('token'); //Retrieve JWT Token
+
+        const response = await axios.put(url, body, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        return response.data; // Return API Response
+    } catch (error) {
+        console.error("Error in postData:", error);
+        throw error; // Rethrow error for handling
+    }
+}
 export async function postFile(url, body) {
     try {
         let token = localStorage.getItem('token'); //Retrieve JWT Token

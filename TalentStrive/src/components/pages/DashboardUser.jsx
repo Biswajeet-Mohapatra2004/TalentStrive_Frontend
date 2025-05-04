@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ApplicationCard } from "../ApplicationCard";
 import { UpdateUserProfile } from "../UpdateUser";
 import { UpdateUserPassword } from "../UpdatePassword";
+
 function DashboardUser() {
     let [jobs, setJobs] = useState([]);
     let [application, setApplication] = useState([{}]);
@@ -120,58 +121,126 @@ function DashboardUser() {
                 )
             case "Profile":
                 return (
-                    <>
-                        <div className="flex flex-col justify-around items-center">
-                            <div id='profile' className="w-2xl border-2 rounded-lg border-amber-50 text-amber-50 font text-xl font-light flex flex-col gap-y-2">
-                                <p>Name: {profile.name}</p>
-                                <p>Username: {profile.username}</p>
-                                <p>Role: {profile.role}</p>
-                                <p>No. of jobs Applied: {application.length === 0 ? "You have not yet applied for any job!!" : application.length}</p>
-
+                    <div className="flex flex-row items-start justify-around mt-10 mb-20">
+                        {/* Profile and Resume Section */}
+                        <div className="flex flex-col gap-y-8 w-full max-w-lg">
+                            {/* Profile Section */}
+                            <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8">
+                                <h2 className="text-3xl font-bold text-center mb-6">User Profile</h2>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-medium text-gray-400">Name:</span>
+                                        <span className="text-lg">{profile.name}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-medium text-gray-400">Username:</span>
+                                        <span className="text-lg">{profile.username}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-medium text-gray-400">Role:</span>
+                                        <span className="text-lg">{profile.role}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-medium text-gray-400">Jobs Applied:</span>
+                                        <span className="text-lg">
+                                            {application.length === 0
+                                                ? "No applications yet"
+                                                : application.length}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <br />
-                            <h3 className="text-amber-50 text-3xl font-bold">Skills</h3>
-                            <div >
-                                {skill.length === 0 ? (
-                                    <h2 className="text-amber-50">Loading Skills...</h2>
+
+                            {/* Resume Section */}
+                            <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8">
+                                <h3 className="text-2xl font-bold text-center mb-4">Resume</h3>
+                                {resume ? (
+                                    <div className="flex flex-col items-center">
+                                        <h2 className="text-amber-50 text-center text-lg mb-4">
+                                            You have uploaded a resume.
+                                        </h2>
+                                        <button
+                                            onClick={redirectToPDF}
+                                            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            View Resume
+                                        </button>
+                                    </div>
                                 ) : (
-                                    <ul className="w-2xl border-2 rounded-lg border-amber-50 text-amber-50 font text-xl flex-wrap flex flex-row gap-x-3">
-                                        {skill.map((value, key) => (
-                                            <li key={key} className={value.includes("*") ? "text-red-500 block w-full" : "text-amber-50 font-light"}>{value}</li>
-                                        ))}
-                                    </ul>
+                                    <h2 className="text-amber-50 text-center text-lg">
+                                        No resume uploaded yet.
+                                    </h2>
                                 )}
                             </div>
+                        </div>
 
+                        {/* Skills Section */}
+                        <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8 w-full max-w-lg">
+                            <h3 className="text-2xl font-bold text-center mb-4">Skills</h3>
+                            {skill.length === 0 ? (
+                                <h2 className="text-center text-gray-400">Loading Skills...</h2>
+                            ) : (
+                                <ul className="flex flex-wrap gap-2">
+                                    {skill.map((value, key) => (
+                                        <li
+                                            key={key}
+                                            className={`px-3 py-1 rounded-lg ${value.includes("*")
+                                                    ? "bg-red-500 text-white"
+                                                    : "bg-gray-700 text-gray-300"
+                                                }`}
+                                        >
+                                            {value.replace("*", "").trim()}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
-                        <br />
-                        <div className="flex flex-col justify-around items-center">
-                            <h3 className="text-amber-50 text-3xl font-bold ">Resume</h3>
-                            <br />
-                            <div className="flex flex-col justify-around items-center">
-                                <button onClick={redirectToPDF} className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
-                                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-                                        View Resume
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                    </>
-                )
+                    </div>
+                );
             case "Add Resume":
                 return (
-                    <>
-                        {resume != null ? <h2 className="text-amber-50 text-center text-2xl">You have already uploaded a resume!!.</h2> : <h2 className="text-amber-50">You dont currently have any resume uploaded!!</h2>}
-                        <div onSubmit={handleSubmit} className="w-fit mx-auto h-0 shadow-xl shadow-amber-50">
-                            <form ref={postFormRef} className="flex mx-0 h-auto flex-col items-center justify-around gap-y-2 my-30">
-
-                                <input type="file" accept="application/pdf" name="file" onChange={handleChange} className="rounded bg-white text-black p-8 " />
-                                <button type="submit" className="bg-green-500 rounded-sm px-8 py-4">upload</button>
+                    <div className="flex flex-col items-center mt-7 h-full">
+                        {resume ? (
+                            <h2 className="text-amber-50 text-center text-2xl mb-6">
+                                You have already uploaded a resume!
+                            </h2>
+                        ) : (
+                            <h2 className="text-amber-50 text-center text-2xl mb-6">
+                                You don't currently have any resume uploaded!
+                            </h2>
+                        )}
+                        <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8 w-full max-w-md">
+                            <form
+                                ref={postFormRef}
+                                onSubmit={handleSubmit}
+                                className="flex flex-col space-y-6"
+                            >
+                                <div className="mb-4">
+                                    <label
+                                        htmlFor="file"
+                                        className="block text-sm font-medium mb-2"
+                                    >
+                                        Upload Resume (PDF only)
+                                    </label>
+                                    <input
+                                        type="file"
+                                        accept="application/pdf"
+                                        name="file"
+                                        id="file"
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                                >
+                                    Upload Resume
+                                </button>
                             </form>
                         </div>
-
-                    </>
-                )
+                    </div>
+                );
             case "Update profile":
                 return (
                     <>

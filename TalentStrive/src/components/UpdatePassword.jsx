@@ -1,14 +1,16 @@
 import { useState } from "react";
+import { postData } from "../api/Fetch";
 export const UpdateUserPassword = () => {
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState({
+        password: ""
+    });
     const handleChange = (e) => {
-        setPassword(e.target.value)
+        setPassword({ ...password, [e.target.name]: e.target.value })
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        // postData("http://localhost:8080/user/update", formData);
-        // alert("Profile Updated Successfully");
-        console.log(password);
+        postData("http://localhost:8080/user/password", password);
+        alert("password Updated Successfully");
     }
     return (
         <div className="flex justify-center items-center my-5 bg-black">

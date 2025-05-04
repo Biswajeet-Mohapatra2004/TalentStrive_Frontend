@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { postData } from "../api/Fetch";
-export const UpdateUserProfile = () => {
+import { updateData } from "../api/Fetch";
+export const UpdateUserProfile = (props) => {
     const [formData, setFormData] = useState({
         username: '',
         name: '',
@@ -11,7 +11,7 @@ export const UpdateUserProfile = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-        postData("http://localhost:8080/user/update", formData);
+        updateData("http://localhost:8080/user/update", formData);
         alert("Profile Updated Successfully");
     }
     return (
