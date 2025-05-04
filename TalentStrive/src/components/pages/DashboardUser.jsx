@@ -4,6 +4,7 @@ import { JobCard } from "../Jobcard";
 import { useRef } from "react";
 import { ApplicationCard } from "../ApplicationCard";
 import { UpdateUserProfile } from "../UpdateUser";
+import { UpdateUserPassword } from "../UpdatePassword";
 function DashboardUser() {
     let [jobs, setJobs] = useState([]);
     let [application, setApplication] = useState([{}]);
@@ -175,6 +176,9 @@ function DashboardUser() {
                 return (
                     <>
                         < UpdateUserProfile />
+                        <br />
+                        <h2 className="text-center text-2xl font-bold text-white">Update password</h2>
+                        <UpdateUserPassword />
                     </>
                 )
 
