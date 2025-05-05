@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="w-full bg-black text-gray-300 p-6 text-center flex flex-col items-center mt-10">
+        <footer className="w-full bg-black text-gray-300 p-6 text-center flex flex-col items-center mt-12">
             <h2 className="text-2xl font-bold mb-4">TalentStrive</h2>
             <p className="mb-4 max-w-xl text-gray-400">
                 Empowering careers and connecting talent with top companies globally. Join us and take the next step in your professional journey.

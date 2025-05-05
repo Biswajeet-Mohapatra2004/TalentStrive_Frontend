@@ -6,8 +6,11 @@ import { ApplicationCard } from "../ApplicationCard";
 import { UpdateUserProfile } from "../UpdateUser";
 import { UpdateUserPassword } from "../UpdatePassword";
 import UserProfile from "../UserProfile";
+import JobDescription from "../JobDescription";
+
 function DashboardUser() {
     let [jobs, setJobs] = useState([]);
+    const [selectedJob, setSelectedJob] = useState(null); // State for the selected job to be used for viewing details of a perticular job
     let [application, setApplication] = useState([{}]);
     let [resume, setResume] = useState("");
     let [currentSection, setCurrentSection] = useState("Available Jobs");
@@ -95,7 +98,13 @@ function DashboardUser() {
             console.error("Error uploading file:", error);
         }
     };
-
+    const handleViewJob = (job) => {
+        setSelectedJob(job); // Set the selected job
+        setCurrentSection("View Job"); // Switch to the "View Job" section
+    };
+    const goBackToJobs = () => {
+        setCurrentSection("Available Jobs"); // Navigate back to Available Jobs
+    };
     const renderSection = () => {
         const userType = "USERS"
         switch (currentSection) {
@@ -103,8 +112,17 @@ function DashboardUser() {
                 return (
                     <div className="flex flex-row flex-wrap w-full h-fit items-center justify-around gap-x-2">
                         {jobs.map((job, index) => (
-                            <JobCard key={index} data={job} idn={index} type={userType} />
+                            <JobCard onViewJob={handleViewJob} key={index} data={job} idn={index} type={userType} />
                         ))}
+                    </div>
+                );
+            case "View Job":
+                return (
+                    <div className="flex flex-row gap-8 items-center justify-center mt-10">
+                        {/* Job Description */}
+                        <div className="w-3/4 bg-gray-800 text-white shadow-lg rounded-lg p-8">
+                            <JobDescription job={selectedJob} goBack={goBackToJobs} />
+                        </div>
                     </div>
                 );
             case "Applications":
