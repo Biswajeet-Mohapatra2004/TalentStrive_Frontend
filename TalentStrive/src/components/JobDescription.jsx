@@ -1,9 +1,17 @@
 import { useEffect, useState } from "react";
-import { Fetch } from "../api/Fetch";
+import { Fetch, postData } from "../api/Fetch";
 
-const JobDescription = ({ job, goBack }) => {
+const JobDescription = ({ job, goBack, profileData }) => {
     const [jobDescription, setJobDescription] = useState(""); // State to store the job description
-
+    const [application, setApplication] = useState({
+        user: {
+            id: profileData.id
+        },
+        jobPost: {
+            id: job.id
+        },
+        status: "In-Consideration"
+    });
     if (!job) {
         return (
             <div className="text-center text-gray-400">
@@ -11,6 +19,11 @@ const JobDescription = ({ job, goBack }) => {
                 <p>Please select a job to view its details.</p>
             </div>
         );
+    }
+    const applyForJob = () => {
+        console.log("Application data:", application);
+        postData("http://localhost:8080/user/job/apply", application);
+        alert("Application submitted successfully!");
     }
 
     useEffect(() => {
@@ -29,17 +42,26 @@ const JobDescription = ({ job, goBack }) => {
             }
         };
         fetchJobDetails();
+
     }, [job.id]); // Fetch job details when the job ID changes
 
     return (
         <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8 w-full max-w-6xl mx-auto">
             {/* Back Button */}
-            <button
-                onClick={goBack}
-                className="mb-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-                Back to Available Jobs
-            </button>
+            <div className="flex justify-between mb-4">
+                <button
+                    onClick={goBack}
+                    className="mb-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    Back to Available Jobs
+                </button>
+                <button
+                    onClick={applyForJob}
+                    className="mb-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    Easy Apply
+                </button>
+            </div>
 
             <h2 className="text-3xl font-bold mb-4">{job.title}</h2>
             <p className="text-gray-400 mb-2">

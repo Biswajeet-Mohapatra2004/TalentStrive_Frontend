@@ -121,13 +121,13 @@ function DashboardUser() {
                     <div className="flex flex-row gap-8 items-center justify-center mt-10">
                         {/* Job Description */}
                         <div className="w-3/4 bg-gray-800 text-white shadow-lg rounded-lg p-8">
-                            <JobDescription job={selectedJob} goBack={goBackToJobs} />
+                            <JobDescription profileData={profile} job={selectedJob} goBack={goBackToJobs} />
                         </div>
                     </div>
                 );
             case "Applications":
                 return (
-                    <div className="flex flex-row flex-wrap w-full h-fit items-start">
+                    <div className="flex flex-row items-center justify-around flex-wrap w-full h-fit ">
                         {application.map((app, index) => (
                             <ApplicationCard key={index} data={app} idn={index} type={userType} />
                         ))}

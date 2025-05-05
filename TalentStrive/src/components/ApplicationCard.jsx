@@ -1,6 +1,11 @@
 export const ApplicationCard = (props) => {
     const application = props.data;
 
+    const deleteApplication = () => {
+
+        alert(`Application with ID ${application.id} has been deleted.`);
+    };
+
     return (
         <div
             key={application.id}
@@ -36,17 +41,18 @@ export const ApplicationCard = (props) => {
                     Status:{" "}
                     <span
                         className={`${application.status === "In-Consideration"
-                                ? "text-yellow-400"
-                                : "text-red-500"
+                            ? "text-yellow-400"
+                            : "text-red-500"
                             }`}
                     >
                         {application.status}
                     </span>
                 </span>
                 <button
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-transform transform hover:scale-105"
+                    onClick={deleteApplication}
+                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-transform transform hover:scale-105"
                 >
-                    View Details
+                    Delete Application
                 </button>
             </div>
         </div>
