@@ -18,7 +18,8 @@ function DashboardUser() {
         id: null,
         name: "",
         role: "",
-        username: ""
+        username: "",
+        applications: 0
     })
 
     let [skill, setSkill] = useState([]);
@@ -62,9 +63,9 @@ function DashboardUser() {
                 id: profileData.data.id,
                 name: profileData.data.name,
                 role: profileData.data.role,
-                username: profileData.data.username
+                username: profileData.data.username,
+                applications: profileData.data.applications
             });
-            console.log(profileData.data);
 
         }
         Profile();

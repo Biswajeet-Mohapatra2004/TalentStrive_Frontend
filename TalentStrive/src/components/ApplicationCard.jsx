@@ -17,7 +17,7 @@ export const ApplicationCard = (props) => {
     const deleteApplication = () => {
         console.log(appObject);
         const response = DeleteJson("http://localhost:8080/user/application/delete", appObject);
-        console.log(response);
+        alert(response.data);
     };
 
     return (
