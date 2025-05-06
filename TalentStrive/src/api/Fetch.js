@@ -92,3 +92,21 @@ export async function deleteData(url) {
         throw error; // Rethrow error for handling
     }
 }
+export async function DeleteJson(url, body) {
+    try {
+        let token = localStorage.getItem('token');
+
+        const response = await axios.delete(url, {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            data: body
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error("Error in DeleteJson:", error);
+        throw error;
+    }
+}

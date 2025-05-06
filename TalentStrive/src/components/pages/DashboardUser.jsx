@@ -58,11 +58,17 @@ function DashboardUser() {
 
         const Profile = async () => {
             const profileData = await Fetch("http://localhost:8080/user/profile");
-            setProfile(profileData.data);
+            setProfile({
+                id: profileData.data.id,
+                name: profileData.data.name,
+                role: profileData.data.role,
+                username: profileData.data.username
+            });
             console.log(profileData.data);
 
         }
         Profile();
+
 
         const fetchSkills = async () => {
             const userSkills = await Fetch("http://localhost:8080/user/skills");

@@ -1,9 +1,23 @@
+import { deleteData, DeleteJson } from "../api/Fetch";
+import { useState } from "react";
 export const ApplicationCard = (props) => {
     const application = props.data;
 
-    const deleteApplication = () => {
+    const [appObject, setAppObject] = useState({
+        id: application.id,
+        jobPostId: application.jobPostId,
+        title: application.title,
+        applicantName: application.applicantName,
+        company: application.company,
+        employerId: application.employerId,
+        userId: application.userId,
+        status: application.status,
+    });
 
-        alert(`Application with ID ${application.id} has been deleted.`);
+    const deleteApplication = () => {
+        console.log(appObject);
+        const response = DeleteJson("http://localhost:8080/user/application/delete", appObject);
+        console.log(response);
     };
 
     return (
