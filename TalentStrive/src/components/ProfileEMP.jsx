@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Fetch } from "../api/Fetch";
-import { JobCard } from "./Jobcard";
+
 const ProfileEMP = (props) => {
     const [profile, setProfile] = useState({
         id: '',
@@ -13,7 +13,6 @@ const ProfileEMP = (props) => {
             industry: '',
             location: ''
         }
-
     });
 
     useEffect(() => {
@@ -33,7 +32,6 @@ const ProfileEMP = (props) => {
                         location: data.company.location
                     }
                 });
-
             } catch (error) {
                 console.error("Error fetching employer profile:", error);
             }
@@ -47,57 +45,45 @@ const ProfileEMP = (props) => {
     }
 
     return (
-        <>
-            <div className=" font-bold text-xl flex flex-col justify-center items-center h-fit text-amber-50">
-
-                <div key={1} className="relative flex flex-col my-6 bg-gray-800 shadow-sm border text-white border-slate-200 rounded-lg w-96">
-                    <div className="mx-3 mb-0 border-b border-slate-200 pt-3 pb-2 px-1">
-                        <span className="text-sm font-medium text-white">
-                            Profile ID:{profile.id}
-                        </span>
-                    </div>
-
-                    <div className="p-4">
-                        <h5 className="mb-2 text-white text-xl font-semibold">
-                            Name: {profile.name}
-                        </h5>
-                        <p className=" text-white leading-normal font-light">
-                            Username: {profile.username}
+        <div className="flex flex-col items-center bg-gray-900 text-white min-h-7 py-10">
+            <div className="flex flex-row gap-8 w-full max-w-6xl">
+                {/* Profile Card */}
+                <div className="flex-1 bg-gray-800 shadow-lg border border-gray-700 rounded-lg p-8">
+                    <h2 className="text-3xl font-bold text-center mb-6">Employer Profile</h2>
+                    <div className="space-y-4">
+                        <p className="text-lg">
+                            <span className="font-semibold text-gray-300">Profile ID:</span> {profile.id}
                         </p>
-                        <p className=" text-white leading-normal font-light">
-                            CompanyID: {profile.company.id}
+                        <p className="text-lg">
+                            <span className="font-semibold text-gray-300">Name:</span> {profile.name}
                         </p>
-                        <p className=" text-white leading-normal font-light">
-                            Industry: {profile.company.industry}
+                        <p className="text-lg">
+                            <span className="font-semibold text-gray-300">Username:</span> {profile.username}
                         </p>
-                        <p className=" text-white leading-normal font-light">
-                            Company: {profile.company.name}
+                        <p className="text-lg">
+                            <span className="font-semibold text-gray-300">Company ID:</span> {profile.company.id}
                         </p>
-
-                        <p className=" text-white leading-normal font-light">
-                            Location: {profile.company.location}
+                        <p className="text-lg">
+                            <span className="font-semibold text-gray-300">Industry:</span> {profile.company.industry}
                         </p>
-                    </div>
-                    <div className="mx-3 border-t border-slate-200 pb-3 pt-2 px-1 flex flex-row justify-between">
-                        <span className="text-sm text-white font-medium ">
-                        </span>
+                        <p className="text-lg">
+                            <span className="font-semibold text-gray-300">Company Name:</span> {profile.company.name}
+                        </p>
+                        <p className="text-lg">
+                            <span className="font-semibold text-gray-300">Location:</span> {profile.company.location}
+                        </p>
                     </div>
                 </div>
 
-                <div className="text-center ">
-                    <h3>Jobs Posted</h3>
-                    <div className="flex flex-row flex-wrap justify-around items-center gap-x-5">
-                        {props.jobsPosted.map((job, index) => (
-                            <JobCard key={index} data={job} idn={index} />
-                        ))}
-                    </div>
-
+                {/* Jobs Posted Count */}
+                <div className="flex-1 bg-gray-800 shadow-lg border border-gray-700 rounded-lg p-8 flex flex-col justify-center items-center">
+                    <h3 className="text-3xl font-bold text-center mb-4">Jobs Posted</h3>
+                    <p className="text-lg text-gray-300">
+                        You have posted <span className="text-amber-400 font-semibold">{props.jobsPosted.length}</span> job(s).
+                    </p>
                 </div>
-
-
-
             </div>
-        </>
+        </div>
     );
 };
 

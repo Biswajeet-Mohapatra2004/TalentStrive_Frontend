@@ -4,9 +4,10 @@ import { JobCard } from "../Jobcard";
 import PostJobCard from "../PostJobCard";
 import { useRef } from "react";
 import ProfileEMP from "../ProfileEMP";
+import { ApplicationCard } from "../ApplicationCard";
 function Dashboard() {
     let [jobs, setJobs] = useState([]);
-    let [application, setApplication] = useState([]);
+    let [applications, setApplications] = useState([]);
     let [currentSection, setCurrentSection] = useState("Postings");
     const url = 'http://localhost:8080/employer/jobs';
     const postFormRef = useRef(null);
@@ -21,18 +22,16 @@ function Dashboard() {
         };
         fetchJobs();
 
-        // const fetchApplications = async () => {
-        //     try {
-        //         const Applications = await Fetch("http://localhost:8080/employer/applications");
-        //         setApplication(Applications.data);
-        //         console.log(application);
-        //     }
-        //     catch (error) {
-        //         console.log(error)
-        //     }
+        const fetchApplications = async () => {
+            try {
+                const response = await Fetch("http://localhost:8080/employer/applications");
+                setApplications(response.data); // Correctly set the applications state
+            } catch (error) {
+                console.error("Error fetching applications:", error);
+            }
 
-        // }
-        // fetchApplications();
+        }
+        fetchApplications();
     }, []);
 
     const renderSection = () => {
@@ -46,11 +45,18 @@ function Dashboard() {
                     </div>
                 );
             case "Applications":
+                let userType = "EMPLOYER";
                 return (
-                    <div className="flex flex-row flex-wrap w-full h-fit items-start">
-
+                    <div className="flex flex-row flex-wrap w-full h-fit items-center justify-around gap-x-4">
+                        {applications.length > 0 ? (
+                            applications.map((application, index) => (
+                                <ApplicationCard usertype={userType} key={index} data={application} />
+                            ))
+                        ) : (
+                            <p className="text-gray-400 text-center w-full">No applications found.</p>
+                        )}
                     </div>
-                )
+                );
             case "Profile":
                 return (
                     <>

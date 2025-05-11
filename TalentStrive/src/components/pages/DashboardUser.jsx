@@ -133,10 +133,11 @@ function DashboardUser() {
                     </div>
                 );
             case "Applications":
+                let userType = "USERS"
                 return (
                     <div className="flex flex-row items-center justify-around flex-wrap w-full h-fit ">
                         {application.map((app, index) => (
-                            <ApplicationCard key={index} data={app} idn={index} type={userType} />
+                            <ApplicationCard usertype={userType} key={index} data={app} idn={index} type={userType} />
                         ))}
 
                     </div>

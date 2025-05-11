@@ -1,23 +1,17 @@
-import { deleteData, DeleteJson } from "../api/Fetch";
-import { useState } from "react";
 export const ApplicationCard = (props) => {
     const application = props.data;
-
-    const [appObject, setAppObject] = useState({
-        id: application.id,
-        jobPostId: application.jobPostId,
-        title: application.title,
-        applicantName: application.applicantName,
-        company: application.company,
-        employerId: application.employerId,
-        userId: application.userId,
-        status: application.status,
-    });
+    const usertype = props.usertype; // Get the usertype prop
 
     const deleteApplication = () => {
-        console.log(appObject);
-        const response = DeleteJson("http://localhost:8080/user/application/delete", appObject);
-        alert(response.data);
+        console.log("Deleting application:", application);
+        // Add logic to delete the application
+        alert(`Application with ID ${application.id} has been deleted.`);
+    };
+
+    const updateStatus = () => {
+        console.log("Updating status for application:", application);
+        // Add logic to update the application status
+        alert(`Status for application with ID ${application.id} has been updated.`);
     };
 
     return (
@@ -39,20 +33,13 @@ export const ApplicationCard = (props) => {
                     <span className="font-semibold text-gray-300">Applicant Name:</span> {application.applicantName}
                 </p>
                 <p className="text-gray-400">
-                    <span className="font-semibold text-gray-300">Company:</span> {application.company}
-                </p>
-                <p className="text-gray-400">
                     <span className="font-semibold text-gray-300">Employer ID:</span> {application.employerId}
                 </p>
                 <p className="text-gray-400">
                     <span className="font-semibold text-gray-300">User ID:</span> {application.userId}
                 </p>
-            </div>
-
-            {/* Footer */}
-            <div className="px-4 py-3 border-t border-gray-700 flex justify-between items-center">
-                <span className="text-sm font-medium">
-                    Status:{" "}
+                <p className="text-gray-400">
+                    <span className="font-semibold text-gray-300">Status:</span>{" "}
                     <span
                         className={`${application.status === "In-Consideration"
                             ? "text-yellow-400"
@@ -61,13 +48,26 @@ export const ApplicationCard = (props) => {
                     >
                         {application.status}
                     </span>
-                </span>
-                <button
-                    onClick={deleteApplication}
-                    className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-transform transform hover:scale-105"
-                >
-                    Delete Application
-                </button>
+                </p>
+            </div>
+
+            {/* Footer */}
+            <div className="px-4 py-3 border-t border-gray-700 flex justify-between items-center">
+                {usertype === "EMPLOYER" ? (
+                    <button
+                        onClick={updateStatus}
+                        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-transform transform hover:scale-105"
+                    >
+                        Update Status
+                    </button>
+                ) : (
+                    <button
+                        onClick={deleteApplication}
+                        className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-transform transform hover:scale-105"
+                    >
+                        Delete Application
+                    </button>
+                )}
             </div>
         </div>
     );
