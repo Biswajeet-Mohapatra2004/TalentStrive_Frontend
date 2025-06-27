@@ -133,7 +133,6 @@ function DashboardUser() {
                     </div>
                 );
             case "Applications":
-                let userType = "USERS"
                 return (
                     <div className="flex flex-row items-center justify-around flex-wrap w-full h-fit ">
                         {application.map((app, index) => (
