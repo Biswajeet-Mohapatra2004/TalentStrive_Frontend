@@ -128,7 +128,7 @@ function DashboardUser() {
                     <div className="flex flex-row gap-8 items-center justify-center mt-10">
                         {/* Job Description */}
                         <div className="w-3/4 bg-gray-800 text-white shadow-lg rounded-lg p-8">
-                            <JobDescription profileData={profile} job={selectedJob} goBack={goBackToJobs} />
+                            <JobDescription userType={userType} profileData={profile} job={selectedJob} goBack={goBackToJobs} />
                         </div>
                     </div>
                 );

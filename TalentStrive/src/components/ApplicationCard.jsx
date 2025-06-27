@@ -1,18 +1,34 @@
+import { fetchPdf } from "../api/Fetch";
+import React, { useState } from "react";
 export const ApplicationCard = (props) => {
+    const [resumeData, setResume] = useState(null);
     const application = props.data;
     const usertype = props.usertype; // Get the usertype prop
-
+    const [resumeExists, setResumeExists] = useState(!!resumeData);
     const deleteApplication = () => {
         console.log("Deleting application:", application);
-        // Add logic to delete the application
         alert(`Application with ID ${application.id} has been deleted.`);
     };
 
     const updateStatus = () => {
         console.log("Updating status for application:", application);
-        // Add logic to update the application status
         alert(`Status for application with ID ${application.id} has been updated.`);
     };
+
+    const redirectToPDF = () => {
+        if (resumeExists) {
+            window.open(resumeData, "_blank");
+        }
+    };
+
+    const fetchUserResume = async (userID) => {
+        let response = await fetchPdf(`http://localhost:8080/employer/applicant/${userID}/resume`);
+        const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+        const blobUrl = URL.createObjectURL(pdfBlob);
+        setResume(blobUrl);
+        redirectToPDF();
+    }
+
 
     return (
         <div
@@ -49,6 +65,16 @@ export const ApplicationCard = (props) => {
                         {application.status}
                     </span>
                 </p>
+                {application.userId && <button
+                    onClick={() => fetchUserResume(application.userId)}
+                    disabled={!resumeExists}
+                    className={`${resumeExists
+                        ? "bg-blue-600 hover:bg-blue-700"
+                        : "bg-gray-600 cursor-not-allowed"
+                        } text-white font-medium py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                >
+                    View Resume
+                </button>}
             </div>
 
             {/* Footer */}

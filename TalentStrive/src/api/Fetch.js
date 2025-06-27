@@ -12,7 +12,7 @@ export async function Fetch(url) {
 }
 export async function fetchPdf(url) {
     try {
-        const response = await axios.get("http://localhost:8080/user/resume/download", {
+        const response = await axios.get(url, {
             responseType: "blob",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("token")}`, // ✅ Add token if required

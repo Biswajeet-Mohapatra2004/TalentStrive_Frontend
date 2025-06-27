@@ -5,9 +5,12 @@ import PostJobCard from "../PostJobCard";
 import { useRef } from "react";
 import ProfileEMP from "../ProfileEMP";
 import { ApplicationCard } from "../ApplicationCard";
+import JobDescription from "../JobDescription";
+
 function Dashboard() {
     let [jobs, setJobs] = useState([]);
     let [applications, setApplications] = useState([]);
+    const [selectedJob, setSelectedJob] = useState(null);
     let [currentSection, setCurrentSection] = useState("Postings");
     const url = 'http://localhost:8080/employer/jobs';
     const postFormRef = useRef(null);
@@ -33,6 +36,14 @@ function Dashboard() {
         }
         fetchApplications();
     }, []);
+    const handleViewJob = (job) => {
+        setSelectedJob(job); // Set the selected job
+        setCurrentSection("View Job"); // Switch to the "View Job" section
+    };
+    const goBackToJobs = () => {
+        setCurrentSection("Postings"); // Navigate back to Available Jobs
+    };
+
 
     const renderSection = () => {
         switch (currentSection) {
@@ -40,8 +51,17 @@ function Dashboard() {
                 return (
                     <div className="flex flex-row flex-wrap w-full h-fit items-center justify-around gap-x-2">
                         {jobs.map((job, index) => (
-                            <JobCard key={index} data={job} idn={index} type={"EMPLOYERS"} />
+                            <JobCard onViewJob={handleViewJob} key={index} data={job} idn={index} type={"EMPLOYERS"} />
                         ))}
+                    </div>
+                );
+            case "View Job":
+                return (
+                    <div className="flex flex-row gap-8 items-center justify-center mt-10">
+                        {/* Job Description */}
+                        <div className="w-3/4 bg-gray-800 text-white shadow-lg rounded-lg p-8">
+                            <JobDescription profileData={""} job={selectedJob} goBack={goBackToJobs} userType={"EMPLOYERS"} />
+                        </div>
                     </div>
                 );
             case "Applications":
