@@ -15,7 +15,7 @@ export async function fetchPdf(url) {
         const response = await axios.get(url, {
             responseType: "blob",
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`, // ✅ Add token if required
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
         });
         return response;

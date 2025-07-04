@@ -44,6 +44,10 @@ function Dashboard() {
         setCurrentSection("Postings"); // Navigate back to Available Jobs
     };
 
+    const handleDeleteApplication = (id) => {
+        setApplications(prev => prev.filter(app => app.id !== id));
+    };
+
 
     const renderSection = () => {
         switch (currentSection) {
@@ -68,13 +72,14 @@ function Dashboard() {
                 let userType = "EMPLOYER";
                 return (
                     <div className="flex flex-row flex-wrap w-full h-fit items-center justify-around gap-x-4">
-                        {applications.length > 0 ? (
-                            applications.map((application, index) => (
-                                <ApplicationCard usertype={userType} key={index} data={application} />
-                            ))
-                        ) : (
-                            <p className="text-gray-400 text-center w-full">No applications found.</p>
-                        )}
+                        {applications.map((application, index) => (
+                            <ApplicationCard
+                                key={application.id}
+                                data={application}
+                                usertype={userType}
+                                onDelete={() => handleDeleteApplication(application.id)}
+                            />
+                        ))}
                     </div>
                 );
             case "Profile":

@@ -1,18 +1,41 @@
-import { fetchPdf } from "../api/Fetch";
+import { DeleteJson, fetchPdf, updateData } from "../api/Fetch";
 import React, { useState } from "react";
 export const ApplicationCard = (props) => {
     const [resumeData, setResume] = useState(null);
     const application = props.data;
-    const usertype = props.usertype; // Get the usertype prop
+    const usertype = props.usertype;
     const [resumeExists, setResumeExists] = useState(!!resumeData);
-    const deleteApplication = () => {
-        console.log("Deleting application:", application);
-        alert(`Application with ID ${application.id} has been deleted.`);
+
+    // Application status phases
+    const statusOptions = [
+        "In-Consideration",
+        "Shortlisted",
+        "Interview Scheduled",
+        "Interviewed",
+        "Offered",
+        "Accepted",
+        "Rejected",
+        "Withdrawn"
+    ];
+    const [selectedStatus, setSelectedStatus] = useState(application.status);
+
+    const deleteApplication = async () => {
+        try {
+            await DeleteJson(`http://localhost:8080/user/application/delete`, application);
+            alert(`Application with ID ${application.id} has been deleted.`);
+            if (props.onDelete) props.onDelete();
+        } catch (err) {
+            alert("Failed to delete application.");
+        }
     };
 
-    const updateStatus = () => {
-        console.log("Updating status for application:", application);
-        alert(`Status for application with ID ${application.id} has been updated.`);
+    const updateStatus = async () => {
+        try {
+            const respone = updateData(`http://localhost:8080/employer/application/${application.id}/setStatus`, { "status": selectedStatus })
+            alert(`Status updated to "${selectedStatus}" for application ID ${application.id}.`);
+        } catch (error) {
+            alert("Failed to update status.");
+        }
     };
 
     const redirectToPDF = () => {
@@ -26,9 +49,9 @@ export const ApplicationCard = (props) => {
         const pdfBlob = new Blob([response.data], { type: "application/pdf" });
         const blobUrl = URL.createObjectURL(pdfBlob);
         setResume(blobUrl);
+        setResumeExists(true);
         redirectToPDF();
-    }
-
+    };
 
     return (
         <div
@@ -56,25 +79,43 @@ export const ApplicationCard = (props) => {
                 </p>
                 <p className="text-gray-400">
                     <span className="font-semibold text-gray-300">Status:</span>{" "}
-                    <span
-                        className={`${application.status === "In-Consideration"
-                            ? "text-yellow-400"
-                            : "text-red-500"
-                            }`}
-                    >
-                        {application.status}
-                    </span>
+                    {usertype === "EMPLOYER" ? (
+                        <select
+                            value={selectedStatus}
+                            onChange={e => setSelectedStatus(e.target.value)}
+                            className="bg-gray-700 text-yellow-400 px-2 py-1 rounded ml-2"
+                        >
+                            {statusOptions.map(status => (
+                                <option key={status} value={status}>
+                                    {status}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <span
+                            className={
+                                application.status === "Accepted"
+                                    ? "text-green-400"
+                                    : application.status === "Rejected"
+                                        ? "text-red-500"
+                                        : "text-yellow-400"
+                            }
+                        >
+                            {application.status}
+                        </span>
+                    )}
                 </p>
-                {application.userId && <button
-                    onClick={() => fetchUserResume(application.userId)}
-                    disabled={!resumeExists}
-                    className={`${resumeExists
-                        ? "bg-blue-600 hover:bg-blue-700"
-                        : "bg-gray-600 cursor-not-allowed"
-                        } text-white font-medium py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                >
-                    View Resume
-                </button>}
+                {usertype === "EMPLOYER" && application.userId && (
+                    <button
+                        onClick={() => fetchUserResume(application.userId)}
+                        className={`${resumeExists
+                            ? "bg-blue-600 hover:bg-blue-700"
+                            : "bg-gray-600 cursor-not-allowed"
+                            } text-white font-medium py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                    >
+                        View Resume
+                    </button>
+                )}
             </div>
 
             {/* Footer */}

@@ -10,7 +10,7 @@ const Register = () => {
         password: '',
         name: '',
         role: 'JOB_SEEKER',
-        applications: []
+
     });
     const navigate = useNavigate();
 
