@@ -17,6 +17,11 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
     const [showAssessmentPopup, setShowAssessmentPopup] = useState(false);
     const [assessmentUrl, setAssessmentUrl] = useState("");
 
+    // Popup state for interview link
+    const [showInterviewPopup, setShowInterviewPopup] = useState(false);
+    const [interviewUrl, setInterviewUrl] = useState("");
+    const [interviewDateTime, setInterviewDateTime] = useState("");
+
     if (!job) {
         return (
             <div className="text-center text-gray-400">
@@ -40,6 +45,22 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
             setAssessmentUrl("");
         } catch (error) {
             alert("Failed to send assessment link.");
+        }
+    };
+
+    // Handler for sending interview link with URL and date/time
+    const sendInterviewLink = async () => {
+        try {
+            await postData(
+                `http://localhost:8080/employer/job/${job.id}/interview`,
+                { url: interviewUrl, date: interviewDateTime }
+            );
+            alert("Interview link sent to all shortlisted candidates!");
+            setShowInterviewPopup(false);
+            setInterviewUrl("");
+            setInterviewDateTime("");
+        } catch (error) {
+            alert("Failed to send interview link.");
         }
     };
 
@@ -73,12 +94,20 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
                 </button>
                 <div className="flex gap-2">
                     {userType === "EMPLOYERS" && (
-                        <button
-                            onClick={() => setShowAssessmentPopup(true)}
-                            className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
-                        >
-                            Send Assessment Link
-                        </button>
+                        <>
+                            <button
+                                onClick={() => setShowAssessmentPopup(true)}
+                                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                            >
+                                Send Assessment Link
+                            </button>
+                            <button
+                                onClick={() => setShowInterviewPopup(true)}
+                                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                Send Interview Link
+                            </button>
+                        </>
                     )}
                     {userType === "USERS" && (
                         <button
@@ -115,6 +144,45 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
                                 onClick={sendAssessmentLink}
                                 disabled={!assessmentUrl}
                                 className={`bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded ${!assessmentUrl ? "opacity-50 cursor-not-allowed" : ""}`}
+                            >
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Interview Link Popup */}
+            {showInterviewPopup && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+                    <div className="bg-gray-900 rounded-lg shadow-lg p-8 w-full max-w-md">
+                        <h2 className="text-2xl font-bold mb-4 text-white">Send Interview Link</h2>
+                        <label className="block text-gray-300 mb-2">Interview URL</label>
+                        <input
+                            type="url"
+                            value={interviewUrl}
+                            onChange={e => setInterviewUrl(e.target.value)}
+                            placeholder="https://your-interview-link.com"
+                            className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                        />
+                        <label className="block text-gray-300 mb-2">Date & Time</label>
+                        <input
+                            type="datetime-local"
+                            value={interviewDateTime}
+                            onChange={e => setInterviewDateTime(e.target.value)}
+                            className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                        />
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => setShowInterviewPopup(false)}
+                                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={sendInterviewLink}
+                                disabled={!interviewUrl || !interviewDateTime}
+                                className={`bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded ${(!interviewUrl || !interviewDateTime) ? "opacity-50 cursor-not-allowed" : ""}`}
                             >
                                 Send
                             </button>

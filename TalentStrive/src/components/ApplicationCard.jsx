@@ -12,7 +12,6 @@ export const ApplicationCard = (props) => {
         "Shortlisted",
         "Interview Scheduled",
         "Interviewed",
-        "Offered",
         "Accepted",
         "Rejected",
         "Withdrawn"
