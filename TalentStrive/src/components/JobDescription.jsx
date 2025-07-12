@@ -13,18 +13,15 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
         status: "In-Consideration"
     });
 
-    // Popup state for assessment link
+    // Popup states
     const [showAssessmentPopup, setShowAssessmentPopup] = useState(false);
     const [assessmentUrl, setAssessmentUrl] = useState("");
-
-    // Popup state for interview link
     const [showInterviewPopup, setShowInterviewPopup] = useState(false);
     const [interviewUrl, setInterviewUrl] = useState("");
     const [interviewDateTime, setInterviewDateTime] = useState("");
-
-    // Popup state for assessment report upload
     const [showReportPopup, setShowReportPopup] = useState(false);
     const [reportFile, setReportFile] = useState(null);
+    const [showLoader, setShowLoader] = useState(false);
 
     if (!job) {
         return (
@@ -68,12 +65,13 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
         }
     };
 
-    // Handler for uploading assessment report
+    // Handler for uploading assessment report with loader
     const uploadAssessmentReport = async () => {
         if (!reportFile) return;
+        setShowLoader(true);
         try {
             const formData = new FormData();
-            formData.append("file", reportFile);
+            formData.append("report", reportFile);
             await fetch(`http://localhost:8080/employer/job/${job.id}/report`, {
                 method: "POST",
                 headers: {
@@ -87,6 +85,7 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
         } catch (error) {
             alert("Failed to upload assessment report.");
         }
+        setShowLoader(false);
     };
 
     useEffect(() => {
@@ -109,6 +108,16 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
 
     return (
         <div className="bg-gray-800 text-white shadow-lg rounded-lg p-8 w-full max-w-6xl mx-auto">
+            {/* Loader Overlay */}
+            {showLoader && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+                    <div className="flex flex-col items-center">
+                        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-400 mb-4"></div>
+                        <span className="text-yellow-300 text-lg font-semibold">Processing report, please wait...</span>
+                    </div>
+                </div>
+            )}
+
             {/* Top Bar */}
             <div className="flex justify-between items-start mb-4">
                 <button
@@ -117,24 +126,24 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
                 >
                     Back to Available Jobs
                 </button>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3 items-end">
                     {userType === "EMPLOYERS" && (
                         <>
                             <button
                                 onClick={() => setShowAssessmentPopup(true)}
-                                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 w-56"
                             >
                                 Send Assessment Link
                             </button>
                             <button
                                 onClick={() => setShowInterviewPopup(true)}
-                                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-56"
                             >
                                 Send Interview Link
                             </button>
                             <button
                                 onClick={() => setShowReportPopup(true)}
-                                className="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                                className="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 w-56"
                             >
                                 Upload Assessment Report
                             </button>
