@@ -22,6 +22,10 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
     const [interviewUrl, setInterviewUrl] = useState("");
     const [interviewDateTime, setInterviewDateTime] = useState("");
 
+    // Popup state for assessment report upload
+    const [showReportPopup, setShowReportPopup] = useState(false);
+    const [reportFile, setReportFile] = useState(null);
+
     if (!job) {
         return (
             <div className="text-center text-gray-400">
@@ -64,6 +68,27 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
         }
     };
 
+    // Handler for uploading assessment report
+    const uploadAssessmentReport = async () => {
+        if (!reportFile) return;
+        try {
+            const formData = new FormData();
+            formData.append("file", reportFile);
+            await fetch(`http://localhost:8080/employer/job/${job.id}/report`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
+                },
+                body: formData,
+            });
+            alert("Assessment report uploaded and candidates informed!");
+            setShowReportPopup(false);
+            setReportFile(null);
+        } catch (error) {
+            alert("Failed to upload assessment report.");
+        }
+    };
+
     useEffect(() => {
         const fetchJobDetails = async () => {
             try {
@@ -92,7 +117,7 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
                 >
                     Back to Available Jobs
                 </button>
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2">
                     {userType === "EMPLOYERS" && (
                         <>
                             <button
@@ -106,6 +131,12 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
                                 className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 Send Interview Link
+                            </button>
+                            <button
+                                onClick={() => setShowReportPopup(true)}
+                                className="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                            >
+                                Upload Assessment Report
                             </button>
                         </>
                     )}
@@ -185,6 +216,36 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
                                 className={`bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded ${(!interviewUrl || !interviewDateTime) ? "opacity-50 cursor-not-allowed" : ""}`}
                             >
                                 Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Assessment Report Upload Popup */}
+            {showReportPopup && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+                    <div className="bg-gray-900 rounded-lg shadow-lg p-8 w-full max-w-md">
+                        <h2 className="text-2xl font-bold mb-4 text-white">Upload Assessment Report</h2>
+                        <input
+                            type="file"
+                            accept=".pdf,.doc,.docx,.xlsx,.csv"
+                            onChange={e => setReportFile(e.target.files[0])}
+                            className="w-full px-4 py-2 rounded bg-gray-800 text-white border border-gray-700 mb-4"
+                        />
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => { setShowReportPopup(false); setReportFile(null); }}
+                                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={uploadAssessmentReport}
+                                disabled={!reportFile}
+                                className={`bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded ${!reportFile ? "opacity-50 cursor-not-allowed" : ""}`}
+                            >
+                                Upload
                             </button>
                         </div>
                     </div>

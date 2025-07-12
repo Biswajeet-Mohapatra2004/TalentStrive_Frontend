@@ -106,7 +106,7 @@ function Dashboard() {
     };
 
     return (
-        <div className="h-screen flex flex-row justify-between gap-x-4">
+        <div className="min-h-screen flex flex-row justify-between gap-x-4 pb-15">
             <div className="mt-5 bg-gray-900 h-fit border-2 border-black w-sm flex flex-col justify-around gap-y-5">
                 {["Postings", "Applications", "Profile", "Add a job", "Update profile"].map((section, index) => (
                     <button
