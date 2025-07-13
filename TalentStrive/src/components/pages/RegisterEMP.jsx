@@ -76,7 +76,8 @@ const RegisterEMP = () => {
                     Register
                 </button>
             </form>
-            <p className="mt-6 text-gray-400">Already have an account? <a href="/login" className="text-purple-400 hover:underline">Login</a></p>
+            <p className="mt-6 text-gray-400">Already have an account? <a href="/employer/login" className="text-purple-400 hover:underline">Login</a></p>
+             <p className="mt-6 text-gray-400">Register as a user? <a href="/user/register" className="text-purple-400 hover:underline">click here</a></p>
         </div>
     );
 };

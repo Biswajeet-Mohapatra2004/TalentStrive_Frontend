@@ -131,21 +131,21 @@ const JobDescription = ({ job, goBack, profileData, userType }) => {
                         <>
                             <button
                                 onClick={() => setShowAssessmentPopup(true)}
-                                className="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 w-56"
+                                className="bg-green-600 hover:bg-green-700 md:px-2 md:py-1.5 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-green-500 w-contain"
                             >
                                 Send Assessment Link
                             </button>
                             <button
                                 onClick={() => setShowInterviewPopup(true)}
-                                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-56"
+                                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 w-contain"
                             >
                                 Send Interview Link
                             </button>
                             <button
                                 onClick={() => setShowReportPopup(true)}
-                                className="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 w-56"
+                                className="bg-yellow-600 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-yellow-500 w-contain"
                             >
-                                Upload Assessment Report
+                                Upload Assessment
                             </button>
                         </>
                     )}
